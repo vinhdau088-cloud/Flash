@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSK FlashCard Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0f0c1b;
+            --bg-card: #1a162b;
+            --bg-card-inner: #252038;
+            --accent-purple: #7c3aed;
+            --accent-blue: #2563eb;
+            --accent-pink: #ec4899;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --border-color: #2e2842;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar Left */
+        .sidebar { width: 220px; background: #141024; border-right: 1px solid var(--border-color); padding: 20px 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .logo { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 25px; display: flex; align-items: center; gap: 8px; }
+        .logo span { background: var(--accent-purple); padding: 2px 8px; border-radius: 6px; font-size: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: var(--text-sub); border-radius: 10px; cursor: pointer; text-decoration: none; margin-bottom: 5px; font-size: 14px; }
+        .menu-item.active, .menu-item:hover { background: var(--accent-purple); color: white; }
+        .streak-box { background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 10px; }
+
+        /* Main Container */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        
+        /* Header */
+        header { height: 60px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; background: #141024; }
+        .search-bar { background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; width: 300px; }
+        .search-bar input { background: transparent; border: none; color: white; outline: none; width: 100%; }
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+
+        /* App Workspace */
+        .workspace { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 20px; }
+
+        /* Flashcard Section */
+        .hsk-selector { display: flex; gap: 10px; margin-bottom: 15px; }
+        .hsk-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: white; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+        .hsk-btn.active { background: var(--accent-purple); }
+
+        .card-container { background: var(--bg-card); border-radius: 20px; padding: 30px; text-align: center; border: 1px solid var(--border-color); position: relative; }
+        .card-box { background: white; color: #333; height: 260px; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; cursor: pointer; transition: transform 0.3s; perspective: 1000px; margin: 15px 0; }
+        .card-box .pinyin { font-size: 20px; color: #666; margin-bottom: 5px; }
+        .card-box .hanzi { font-size: 55px; font-weight: bold; margin-bottom: 10px; }
+        .card-box .meaning { font-size: 22px; color: var(--accent-purple); font-weight: 600; display: none; }
+        .card-box.flipped .meaning { display: block; }
+
+        .rating-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .rate-btn { padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; }
+        .btn-remembered { background: #ef4444; }
+        .btn-hard { background: #f59e0b; }
+        .btn-unsure { background: #3b82f6; }
+        .btn-forgot { background: #8b5cf6; }
+
+        /* Community Section */
+        .community-panel { background: var(--bg-card); border-radius: 15px; padding: 20px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; height: 580px; }
+        .comm-header { display: flex; justify-content: space-between; align-items: center; }
+        .post-input-box { background: var(--bg-card-inner); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .post-input-box textarea { background: transparent; border: none; color: white; resize: none; outline: none; height: 50px; }
+        .post-feed { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .post-item { background: var(--bg-card-inner); padding: 12px; border-radius: 10px; font-size: 13px; }
+        .post-author { font-weight: bold; color: #a7f3d0; margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .post-comments { margin-top: 8px; padding-left: 10px; border-left: 2px solid var(--border-color); }
+        .comment-input-group { display: flex; gap: 5px; margin-top: 5px; }
+        .comment-input-group input { flex: 1; background: #141024; border: 1px solid var(--border-color); color: white; padding: 4px 8px; border-radius: 4px; }
+
+        /* Custom Word Section */
+        .bottom-section { grid-column: span 2; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .add-word-form { background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .form-grid input, .form-grid select { background: var(--bg-card-inner); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 8px; outline: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <div class="logo"><i class="fa-solid fa-book-open"></i> HSK FlashCard <span>Pro</span></div>
+            <a class="menu-item active"><i class="fa-solid fa-graduation-cap"></i> Học tập</a>
+            <a class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> Ôn tập</a>
+            <a class="menu-item"><i class="fa-solid fa-list"></i> Từ vựng của tôi</a>
+            <a class="menu-item"><i class="fa-solid fa-users"></i> Cộng đồng</a>
+        </div>
+        <div class="streak-box">
+            🔥 Chuỗi ngày học: <b>12 ngày</b>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Tìm kiếm từ vựng, bài học...">
+            </div>
+            <div class="user-profile">
+                <span>👤 Tên bạn: </span>
+                <input type="text" id="username-input" value="Vinh" style="background: var(--bg-card); border: 1px solid var(--border-color); color: white; padding: 4px 8px; border-radius: 6px; width: 100px;">
+            </div>
+        </header>
+
+        <div class="workspace">
+            <!-- Flashcard Workspace -->
+            <div>
+                <div class="hsk-selector">
+                    <button class="hsk-btn" onclick="changeHSK('hsk1')">HSK 1</button>
+                    <button class="hsk-btn" onclick="changeHSK('hsk2')">HSK 2</button>
+                    <button class="hsk-btn active" onclick="changeHSK('hsk3')">HSK 3</button>
+                    <button class="hsk-btn" onclick="changeHSK('hsk4')">HSK 4</button>
+                    <button class="hsk-btn" onclick="changeHSK('hsk5')">HSK 5</button>
+                    <button class="hsk-btn" onclick="changeHSK('hsk6')">HSK 6</button>
+                </div>
+
+                <div class="card-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span id="current-hsk-title">HSK 3 - Thẻ học</span>
+                        <div>
+                            <button onclick="speakCurrentWord()" style="background: none; border: none; color: white; cursor: pointer; font-size: 18px;"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="card-box" id="flashcard" onclick="flipCard()">
+                        <div class="pinyin" id="card-pinyin">xué xí</div>
+                        <div class="hanzi" id="card-hanzi">学习</div>
+                        <div class="meaning" id="card-meaning">học tập, học</div>
+                    </div>
+
+                    <p style="font-size: 12px; color: var(--text-sub);">💡 Nhấp vào thẻ để lật xem nghĩa từ vựng.</p>
+
+                    <div class="rating-btns">
+                        <button class="rate-btn btn-remembered" onclick="nextCard()">❤️ Đã nhớ</button>
+                        <button class="rate-btn btn-hard" onclick="nextCard()">😐 Khó một chút</button>
+                        <button class="rate-btn btn-unsure" onclick="nextCard()">😟 Chưa chắc</button>
+                        <button class="rate-btn btn-forgot" onclick="nextCard()">😵 Chưa nhớ</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Workspace -->
+            <div class="community-panel">
+                <div class="comm-header">
+                    <h3>CỘNG ĐỒNG</h3>
+                </div>
+
+                <div class="post-input-box">
+                    <textarea id="post-text" placeholder="Chia sẻ mẹo học hoặc câu hỏi..."></textarea>
+                    <div style="display: flex; justify-content: space-between;">
+                        <select id="post-hsk-tag" style="background: #141024; color: white; border: none; padding: 4px; border-radius: 4px;">
+                            <option value="HSK 1">HSK 1</option>
+                            <option value="HSK 2">HSK 2</option>
+                            <option value="HSK 3" selected>HSK 3</option>
+                            <option value="HSK 4">HSK 4</option>
+                        </select>
+                        <button onclick="createPost()" style="background: var(--accent-purple); color: white; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer;">Đăng bài</button>
+                    </div>
+                </div>
+
+                <div class="post-feed" id="post-feed">
+                    <!-- Posts will load dynamically -->
+                </div>
+            </div>
+
+            <!-- Custom Word Form -->
+            <div class="bottom-section">
+                <div class="add-word-form">
+                    <h3>ĐĂNG NHẬP (TỰ THÊM TỪ VỰNG CÁ NHÂN)</h3>
+                    <div class="form-grid">
+                        <input type="text" id="custom-word" placeholder="Từ vựng tiếng Trung">
+                        <input type="text" id="custom-pinyin" placeholder="Pinyin">
+                        <input type="text" id="custom-meaning" placeholder="Nghĩa tiếng Việt">
+                        <select id="custom-hsk">
+                            <option value="hsk1">HSK 1</option>
+                            <option value="hsk2">HSK 2</option>
+                            <option value="hsk3">HSK 3</option>
+                            <option value="hsk4">HSK 4</option>
+                            <option value="hsk5">HSK 5</option>
+                            <option value="hsk6">HSK 6</option>
+                        </select>
+                        <input type="text" id="custom-example" placeholder="Ví dụ đặt câu">
+                        <button onclick="addCustomWord()" style="background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Lưu từ vựng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let hskData = {};
+        let currentHSK = 'hsk3';
+        let currentWordIndex = 0;
+
+        let posts = [
+            {
+                id: 1,
+                author: "Lan Anh",
+                tag: "HSK 4",
+                content: "Cách mình nhớ 50 từ vựng mỗi ngày hiệu quả: Hãy ghép câu trực tiếp!",
+                comments: ["Đồng ý nha!", "Mẹo hay quá b ơi"]
+            }
+        ];
+
+        // Fetch JSON Data
+        async function loadHSKData() {
+            try {
+                const res = await fetch('hsk_data.json');
+                hskData = await res.json();
+                renderCard();
+            } catch (err) {
+                console.error("Lỗi nạp file JSON từ vựng, sử dụng dữ liệu mặc định", err);
+            }
+        }
+
+        function renderCard() {
+            const list = hskData[currentHSK] || [];
+            if (list.length === 0) {
+                document.getElementById('card-hanzi').innerText = "Chưa có từ";
+                document.getElementById('card-pinyin').innerText = "";
+                document.getElementById('card-meaning').innerText = "Hãy tự thêm từ vựng mới bên dưới!";
+                return;
+            }
+
+            const wordObj = list[currentWordIndex % list.length];
+            document.getElementById('card-hanzi').innerText = wordObj.word;
+            document.getElementById('card-pinyin').innerText = wordObj.pinyin;
+            document.getElementById('card-meaning').innerText = wordObj.meaning;
+            
+            // Reset state
+            document.getElementById('flashcard').classList.remove('flipped');
+            document.getElementById('current-hsk-title').innerText = `${currentHSK.toUpperCase()} - Thẻ ${currentWordIndex + 1}/${list.length}`;
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            const list = hskData[currentHSK] || [];
+            if(list.length > 0) {
+                currentWordIndex = (currentWordIndex + 1) % list.length;
+                renderCard();
+            }
+        }
+
+        function changeHSK(level) {
+            currentHSK = level;
+            currentWordIndex = 0;
+            document.querySelectorAll('.hsk-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCard();
+        }
+
+        // Speech Audio Synthesis
+        function speakCurrentWord() {
+            const word = document.getElementById('card-hanzi').innerText;
+            if ('speechSynthesis' in window && word) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'zh-CN';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt không hỗ trợ phát âm tiếng Trung.");
+            }
+        }
+
+        // Custom Words Functionality
+        function addCustomWord() {
+            const word = document.getElementById('custom-word').value.trim();
+            const pinyin = document.getElementById('custom-pinyin').value.trim();
+            const meaning = document.getElementById('custom-meaning').value.trim();
+            const targetHSK = document.getElementById('custom-hsk').value;
+            const example = document.getElementById('custom-example').value.trim();
+
+            if (!word || !meaning) {
+                alert("Vui lòng điền ít nhất Từ vựng và Nghĩa!");
+                return;
+            }
+
+            if (!hskData[targetHSK]) hskData[targetHSK] = [];
+            hskData[targetHSK].push({ id: Date.now(), word, pinyin, meaning, example });
+
+            alert(`Đã thêm từ [${word}] vào ${targetHSK.toUpperCase()}`);
+            document.getElementById('custom-word').value = '';
+            document.getElementById('custom-pinyin').value = '';
+            document.getElementById('custom-meaning').value = '';
+            document.getElementById('custom-example').value = '';
+
+            if (targetHSK === currentHSK) renderCard();
+        }
+
+        // Community Functionality
+        function renderPosts() {
+            const feed = document.getElementById('post-feed');
+            feed.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                const postEl = document.createElement('div');
+                postEl.className = 'post-item';
+                postEl.innerHTML = `
+                    <div class="post-author">
+                        <span>${post.author}</span>
+                        <span style="font-size:10px; background:var(--accent-purple); padding:2px 6px; border-radius:4px;">${post.tag}</span>
+                    </div>
+                    <div>${post.content}</div>
+                    <div class="post-comments">
+                        ${post.comments.map(c => `<div style="font-size:11px; color:#cbd5e1;">• ${c}</div>`).join('')}
+                        <div class="comment-input-group">
+                            <input type="text" id="comm-input-${index}" placeholder="Viết bình luận...">
+                            <button onclick="addComment(${index})" style="background:var(--accent-blue); border:none; color:white; padding:2px 8px; border-radius:4px; cursor:pointer;">Gửi</button>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(postEl);
+            });
+        }
+
+        function createPost() {
+            const text = document.getElementById('post-text').value.trim();
+            const name = document.getElementById('username-input').value.trim() || "Ẩn danh";
+            const tag = document.getElementById('post-hsk-tag').value;
+
+            if (!text) return;
+
+            posts.unshift({
+                id: Date.now(),
+                author: name,
+                tag: tag,
+                content: text,
+                comments: []
+            });
+
+            document.getElementById('post-text').value = '';
+            renderPosts();
+        }
+
+        function addComment(postIndex) {
+            const input = document.getElementById(`comm-input-${postIndex}`);
+            const text = input.value.trim();
+            const name = document.getElementById('username-input').value.trim() || "Ẩn danh";
+
+            if (!text) return;
+
+            posts[postIndex].comments.push(`${name}: ${text}`);
+            renderPosts();
+        }
+
+        // Init App
+        window.onload = () => {
+            loadHSKData();
+            renderPosts();
+        };
+    </script>
+</body>
+</html>
