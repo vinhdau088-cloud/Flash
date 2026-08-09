@@ -7,139 +7,255 @@
   <style>
     :root {
       --bg: #eef5f3;
-      --card-bg: #f8fafc;
-      --primary: #4f46e5;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
       --text: #1e293b;
       --border: #e2e8f0;
-      --remember: #ef4444;
-      --forget: #3b82f6;
+      --remember: #e11d48;
+      --forget: #2563eb;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 20px;
-      margin: 0;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 10px;
     }
+
     .container {
       width: 100%;
-      max-width: 800px;
-      background: #fff;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      max-width: 760px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
     }
+
     .header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      margin-bottom: 12px;
     }
-    .title h1 { margin: 0; font-size: 24px; color: #1e3a8a; }
-    .title p { margin: 4px 0 0; color: #64748b; font-size: 13px; }
+
+    .title h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1e3a8a;
+    }
+
+    .title p { margin-top: 4px; color: #64748b; font-size: 13px; }
+
+    .badge-counter {
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      color: #475569;
+      font-size: 14px;
+    }
+
     .progress-bar {
       height: 8px;
       background: #e2e8f0;
       border-radius: 4px;
-      margin: 15px 0;
+      margin: 12px 0 24px;
       overflow: hidden;
     }
+
     .progress-fill {
       height: 100%;
-      background: #3b82f6;
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
       width: 0%;
-      transition: width 0.3s;
+      transition: width 0.3s ease;
     }
-    
+
     /* Flip Card Setup */
     .card-wrapper {
       perspective: 1000px;
-      margin: 20px 0;
+      margin-bottom: 20px;
+      cursor: pointer;
     }
+
     .card {
       background: var(--card-bg);
       border: 2px solid #e0f2fe;
-      border-radius: 16px;
-      padding: 25px;
-      text-align: center;
-      transition: transform 0.6s;
+      border-radius: 20px;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
       position: relative;
-      min-height: 220px;
+      min-height: 240px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
+
     .card.flipped { transform: rotateY(180deg); }
+
     .card-front, .card-back {
       backface-visibility: hidden;
       width: 100%;
-    }
-    .card-back {
-      position: absolute;
-      top: 0; left: 0;
       height: 100%;
-      box-sizing: border-box;
-      padding: 25px;
-      transform: rotateY(180deg);
+      padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      border-radius: 20px;
     }
-    
-    .hanzi { font-size: 64px; font-weight: bold; margin: 0; color: #0f172a; }
-    .pinyin { color: #2563eb; font-size: 20px; font-weight: 600; margin: 5px 0; }
-    .hint { color: #64748b; font-size: 13px; margin-top: 15px; }
-    
+
+    .card-back {
+      position: absolute;
+      top: 0; left: 0;
+      transform: rotateY(180deg);
+      background: #f8fafc;
+    }
+
+    .tag-level {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hanzi {
+      font-size: 68px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .pinyin-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pinyin { color: #2563eb; font-size: 22px; font-weight: 600; }
+
+    .audio-btn {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #2563eb;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .audio-btn:hover {
+      background: #2563eb;
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .audio-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .hint { color: #94a3b8; font-size: 13px; margin-top: 16px; }
+
+    .meaning-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+
+    /* Info Grid */
     .grid-info {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
+
     .info-box {
-      background: #f1f5f9;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 12px;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      padding: 10px 8px;
+      border-radius: 12px;
       text-align: center;
     }
-    .info-box span { display: block; color: #64748b; font-weight: 600; margin-bottom: 4px; text-transform: uppercase;}
-    .info-box strong { font-size: 14px; color: #0f172a; }
 
+    .info-box span {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .info-box strong { font-size: 14px; color: #1e293b; }
+
+    /* Example Box */
     .example-box {
-      background: #f8fafc;
+      background: #fafafa;
       border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 14px;
-      text-align: left;
+      border-radius: 14px;
+      padding: 14px 16px;
       margin-bottom: 20px;
     }
 
+    .example-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: #059669;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .example-cn { font-size: 16px; font-weight: 600; color: #0f172a; }
+    .example-pinyin { font-size: 13px; color: #64748b; }
+    .example-vi { font-size: 14px; color: #334155; }
+
+    /* Actions */
     .actions {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
+      margin-bottom: 20px;
     }
+
     button {
       border: 1px solid var(--border);
-      background: #fff;
-      padding: 12px 5px;
-      border-radius: 10px;
+      background: #ffffff;
+      padding: 12px 8px;
+      border-radius: 12px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 13px;
-      transition: background 0.2s;
+      color: #334155;
+      transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
     }
-    button:hover { background: #f1f5f9; }
-    .btn-remember { color: var(--remember); }
-    .btn-forget { color: var(--forget); }
-    
-    .mode-switch {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
+
+    button:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+    .btn-remember { color: var(--remember); background: #fff1f2; border-color: #fecdd3; }
+    .btn-remember:hover { background: #ffe4e6; }
+
+    .btn-forget { color: var(--forget); background: #eff6ff; border-color: #bfdbfe; }
+    .btn-forget:hover { background: #dbeafe; }
+
+    .mode-bar { display: flex; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 16px; }
+    .mode-btn { flex: 1; padding: 10px; flex-direction: row; justify-content: center; }
+    .mode-btn.active { background: #1e293b; color: #ffffff; border-color: #1e293b; }
+
+    @media (max-width: 600px) {
+      .grid-info, .actions { grid-template-columns: repeat(2, 1fr); }
+      .hanzi { font-size: 54px; }
     }
   </style>
 </head>
@@ -149,27 +265,35 @@
   <div class="header">
     <div class="title">
       <h1>HSK FLASH CARD</h1>
-      <p>Học chữ Hán • Nhớ lâu • Ôn tập thông minh</p>
+      <p>Học chữ Hán • Phát âm Google TTS • Ôn tập thông minh</p>
     </div>
-    <span id="card-counter" style="font-weight:bold; color:#64748b;">1/1</span>
+    <div class="badge-counter" id="card-counter">0/0</div>
   </div>
 
   <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
-  <div class="card-wrapper" onclick="flipCard()">
+  <!-- Flashcard -->
+  <div class="card-wrapper" onclick="flipCard(event)">
     <div class="card" id="card">
+      <div class="tag-level" id="front-level">HSK</div>
       <div class="card-front">
-        <h2 class="hanzi" id="front-hanzi">谢谢</h2>
-        <div class="pinyin" id="front-pinyin">[xièxie]</div>
+        <h2 class="hanzi" id="front-hanzi">加载中...</h2>
+        <div class="pinyin-container">
+          <span class="pinyin" id="front-pinyin">[-]</span>
+          <button class="audio-btn" title="Phát âm tiếng Trung" onclick="speakCurrent(event)">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </button>
+        </div>
         <div class="hint">Hãy đoán nghĩa trước khi lật thẻ</div>
       </div>
       <div class="card-back">
-        <h3 id="back-meaning" style="font-size: 24px; color: #2563eb; margin:0 0 10px 0;">Cảm ơn</h3>
-        <p id="back-detail" style="color: #475569; margin:0;"></p>
+        <div class="meaning-title" id="back-meaning">Nghĩa</div>
+        <p style="color: #64748b; font-size: 14px;">Lật lại để xem mặt trước</p>
       </div>
     </div>
   </div>
 
+  <!-- Chi tiết -->
   <div class="grid-info">
     <div class="info-box"><span>Bộ / Thành phần</span><strong id="info-radical">-</strong></div>
     <div class="info-box"><span>Số nét</span><strong id="info-strokes">-</strong></div>
@@ -177,22 +301,43 @@
     <div class="info-box"><span>Từ loại</span><strong id="info-pos">-</strong></div>
   </div>
 
+  <!-- Câu ví dụ -->
   <div class="example-box">
-    <strong>📖 CÂU VÍ DỤ</strong><br>
-    <span id="ex-cn" style="font-weight:600;">-</span><br>
-    <small id="ex-pinyin" style="color:#64748b;">-</small> | <span id="ex-vi">-</span>
+    <div class="example-header">
+      <span>📖 CÂU VÍ DỤ</span>
+      <button class="audio-btn" style="width:28px; height:28px;" title="Nghe câu ví dụ" onclick="speakExample(event)">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      </button>
+    </div>
+    <div class="example-cn" id="ex-cn">-</div>
+    <div class="example-pinyin" id="ex-pinyin">-</div>
+    <div class="example-vi" id="ex-vi">-</div>
   </div>
 
+  <!-- Nút bấm -->
   <div class="actions">
-    <button class="btn-remember" onclick="markWord('remember')">❤️ ĐÃ NHỚ</button>
-    <button onclick="nextCard()">➔ TIẾP</button>
-    <button class="btn-forget" onclick="markWord('forget')">☹ CHƯA NHỚ</button>
-    <button onclick="flipCard()">🔄 XEM ĐÁP ÁN</button>
+    <button class="btn-remember" onclick="markWord('remember')">
+      <span>❤️ ĐÃ NHỚ</span>
+      <small style="font-size:10px; opacity:0.8;">Lưu danh sách nhớ</small>
+    </button>
+    <button onclick="nextCard()">
+      <span>➔ TIẾP THEO</span>
+      <small style="font-size:10px; color:#64748b;">Chuyển thẻ</small>
+    </button>
+    <button class="btn-forget" onclick="markWord('forget')">
+      <span>☹ CHƯA NHỚ</span>
+      <small style="font-size:10px; opacity:0.8;">Cần học lại</small>
+    </button>
+    <button onclick="flipCardDirect()">
+      <span>🔄 XEM ĐÁP ÁN</span>
+      <small style="font-size:10px; color:#64748b;">Lật mặt sau</small>
+    </button>
   </div>
 
-  <div class="mode-switch">
-    <button onclick="filterMode('all')">📚 Tất cả từ vựng</button>
-    <button onclick="filterMode('review')">🔄 Ôn tập từ chưa nhớ</button>
+  <!-- Chế độ học -->
+  <div class="mode-bar">
+    <button class="mode-btn active" id="btn-mode-all" onclick="filterMode('all')">📚 Tất cả từ vựng</button>
+    <button class="mode-btn" id="btn-mode-review" onclick="filterMode('review')">🔄 Ôn từ chưa nhớ (<span id="count-forget">0</span>)</button>
   </div>
 </div>
 
@@ -200,90 +345,640 @@
   let allWords = [];
   let currentList = [];
   let currentIndex = 0;
+  let currentMode = 'all';
 
   let remembered = JSON.parse(localStorage.getItem('rememberedWords')) || [];
   let forgotten = JSON.parse(localStorage.getItem('forgottenWords')) || [];
 
-  // Tải dữ liệu từ file words.json
   async function loadWords() {
     try {
       const res = await fetch('words.json');
       allWords = await res.json();
-      currentList = [...allWords];
+      updateModeList();
       renderCard();
+      updateForgetCount();
     } catch (e) {
-      console.error("Chưa tìm thấy file words.json, vui lòng tải kèm file json!");
+      document.getElementById('front-hanzi').innerText = "Lỗi!";
+      document.getElementById('front-pinyin').innerText = "Không thể tải file words.json";
+    }
+  }
+
+  function updateForgetCount() {
+    document.getElementById('count-forget').innerText = forgotten.length;
+  }
+
+  function updateModeList() {
+    if (currentMode === 'review') {
+      currentList = allWords.filter(w => forgotten.includes(w.id));
+    } else {
+      currentList = [...allWords];
     }
   }
 
   function renderCard() {
+    updateForgetCount();
+    
     if (currentList.length === 0) {
       document.getElementById('front-hanzi').innerText = "🎉";
-      document.getElementById('front-pinyin').innerText = "Hoàn thành danh sách!";
+      document.getElementById('front-pinyin').innerText = currentMode === 'review' ? "Bạn đã nhớ hết các từ ôn tập!" : "Chưa có từ vựng";
+      document.getElementById('back-meaning').innerText = "Hoàn thành!";
+      document.getElementById('card-counter').innerText = `0/0`;
+      document.getElementById('progress').style.width = `100%`;
       return;
     }
+
+    if (currentIndex >= currentList.length) currentIndex = 0;
     const item = currentList[currentIndex];
     
-    // Front
     document.getElementById('front-hanzi').innerText = item.hanzi;
     document.getElementById('front-pinyin').innerText = `[${item.pinyin}]`;
-    
-    // Back
+    document.getElementById('front-level').innerText = item.level || 'HSK';
     document.getElementById('back-meaning').innerText = item.meaning;
     
-    // Details
-    document.getElementById('info-radical').innerText = item.radical;
-    document.getElementById('info-strokes').innerText = item.strokes;
-    document.getElementById('info-hanviet').innerText = item.hanviet;
-    document.getElementById('info-pos').innerText = item.pos;
+    document.getElementById('info-radical').innerText = item.radical || '-';
+    document.getElementById('info-strokes').innerText = item.strokes || '-';
+    document.getElementById('info-hanviet').innerText = item.hanviet || '-';
+    document.getElementById('info-pos').innerText = item.pos || '-';
     
-    // Example
-    document.getElementById('ex-cn').innerText = item.example_cn;
-    document.getElementById('ex-pinyin').innerText = item.example_pinyin;
-    document.getElementById('ex-vi').innerText = item.example_vi;
+    document.getElementById('ex-cn').innerText = item.example_cn || '-';
+    document.getElementById('ex-pinyin').innerText = item.example_pinyin || '-';
+    document.getElementById('ex-vi').innerText = item.example_vi || '-';
 
-    // Progress & Counter
     document.getElementById('card-counter').innerText = `${currentIndex + 1}/${currentList.length}`;
     document.getElementById('progress').style.width = `${((currentIndex + 1) / currentList.length) * 100}%`;
-    
-    // Reset Flip state
     document.getElementById('card').classList.remove('flipped');
   }
 
-  function flipCard() {
+  function flipCard(event) {
+    if (event.target.closest('.audio-btn')) return;
+    document.getElementById('card').classList.toggle('flipped');
+  }
+
+  function flipCardDirect() {
     document.getElementById('card').classList.toggle('flipped');
   }
 
   function nextCard() {
-    if (currentIndex < currentList.length - 1) {
-      currentIndex++;
-      renderCard();
-    }
+    if (currentList.length === 0) return;
+    currentIndex = (currentIndex + 1) % currentList.length;
+    renderCard();
   }
 
   function markWord(type) {
-    const id = currentList[currentIndex].id;
+    if (currentList.length === 0) return;
+    const item = currentList[currentIndex];
+    
     if (type === 'remember') {
-      if (!remembered.includes(id)) remembered.push(id);
-      forgotten = forgotten.filter(item => item !== id);
+      if (!remembered.includes(item.id)) remembered.push(item.id);
+      forgotten = forgotten.filter(id => id !== item.id);
     } else {
-      if (!forgotten.includes(id)) forgotten.push(id);
-      remembered = remembered.filter(item => item !== id);
+      if (!forgotten.includes(item.id)) forgotten.push(item.id);
+      remembered = remembered.filter(id => id !== item.id);
     }
+
     localStorage.setItem('rememberedWords', JSON.stringify(remembered));
     localStorage.setItem('forgottenWords', JSON.stringify(forgotten));
-    nextCard();
+
+    if (currentMode === 'review' && type === 'remember') {
+      currentList = currentList.filter(w => w.id !== item.id);
+      if (currentIndex >= currentList.length) currentIndex = 0;
+    } else {
+      currentIndex = (currentIndex + 1) % currentList.length;
+    }
+    
+    renderCard();
   }
 
   function filterMode(mode) {
+    currentMode = mode;
     currentIndex = 0;
-    if (mode === 'review') {
+    document.getElementById('btn-mode-all').classList.toggle('active', mode === 'all');
+    document.getElementById('btn-mode-review').classList.toggle('active', mode === 'review');
+    updateModeList();
+    renderCard();
+  }
+
+  // --- Google TTS Phát âm Tiếng Trung ---
+  function speakText(text) {
+    if (!text || text === '-') return;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.85;
+      
+      const voices = window.speechSynthesis.getVoices();
+      const zhVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('cmn'));
+      if (zhVoice) utterance.voice = zhVoice;
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=zh-CN&client=tw-ob`;
+      new Audio(url).play();
+    }
+  }
+
+  function speakCurrent(event) {
+    if (event) event.stopPropagation();
+    if (currentList.length > 0) speakText(currentList[currentIndex].hanzi);
+  }
+
+  function speakExample(event) {
+    if (event) event.stopPropagation();
+    if (currentList.length > 0) speakText(currentList[currentIndex].example_cn);
+  }
+
+  loadWords();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSK Flashcard Pro</title>
+  <style>
+    :root {
+      --bg: #eef5f3;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --remember: #e11d48;
+      --forget: #2563eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .title h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1e3a8a;
+    }
+
+    .title p { margin-top: 4px; color: #64748b; font-size: 13px; }
+
+    .badge-counter {
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin: 12px 0 24px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Flip Card Setup */
+    .card-wrapper {
+      perspective: 1000px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 2px solid #e0f2fe;
+      border-radius: 20px;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      position: relative;
+      min-height: 240px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .card.flipped { transform: rotateY(180deg); }
+
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      width: 100%;
+      height: 100%;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+    }
+
+    .card-back {
+      position: absolute;
+      top: 0; left: 0;
+      transform: rotateY(180deg);
+      background: #f8fafc;
+    }
+
+    .tag-level {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hanzi {
+      font-size: 68px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .pinyin-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pinyin { color: #2563eb; font-size: 22px; font-weight: 600; }
+
+    .audio-btn {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #2563eb;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .audio-btn:hover {
+      background: #2563eb;
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .audio-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .hint { color: #94a3b8; font-size: 13px; margin-top: 16px; }
+
+    .meaning-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+
+    /* Info Grid */
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .info-box {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      padding: 10px 8px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .info-box span {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .info-box strong { font-size: 14px; color: #1e293b; }
+
+    /* Example Box */
+    .example-box {
+      background: #fafafa;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+
+    .example-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: #059669;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .example-cn { font-size: 16px; font-weight: 600; color: #0f172a; }
+    .example-pinyin { font-size: 13px; color: #64748b; }
+    .example-vi { font-size: 14px; color: #334155; }
+
+    /* Actions */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: #ffffff;
+      padding: 12px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      color: #334155;
+      transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+
+    button:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+    .btn-remember { color: var(--remember); background: #fff1f2; border-color: #fecdd3; }
+    .btn-remember:hover { background: #ffe4e6; }
+
+    .btn-forget { color: var(--forget); background: #eff6ff; border-color: #bfdbfe; }
+    .btn-forget:hover { background: #dbeafe; }
+
+    .mode-bar { display: flex; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 16px; }
+    .mode-btn { flex: 1; padding: 10px; flex-direction: row; justify-content: center; }
+    .mode-btn.active { background: #1e293b; color: #ffffff; border-color: #1e293b; }
+
+    @media (max-width: 600px) {
+      .grid-info, .actions { grid-template-columns: repeat(2, 1fr); }
+      .hanzi { font-size: 54px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="title">
+      <h1>HSK FLASH CARD</h1>
+      <p>Học chữ Hán • Phát âm Google TTS • Ôn tập thông minh</p>
+    </div>
+    <div class="badge-counter" id="card-counter">0/0</div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+  <!-- Flashcard -->
+  <div class="card-wrapper" onclick="flipCard(event)">
+    <div class="card" id="card">
+      <div class="tag-level" id="front-level">HSK</div>
+      <div class="card-front">
+        <h2 class="hanzi" id="front-hanzi">加载中...</h2>
+        <div class="pinyin-container">
+          <span class="pinyin" id="front-pinyin">[-]</span>
+          <button class="audio-btn" title="Phát âm tiếng Trung" onclick="speakCurrent(event)">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </button>
+        </div>
+        <div class="hint">Hãy đoán nghĩa trước khi lật thẻ</div>
+      </div>
+      <div class="card-back">
+        <div class="meaning-title" id="back-meaning">Nghĩa</div>
+        <p style="color: #64748b; font-size: 14px;">Lật lại để xem mặt trước</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chi tiết -->
+  <div class="grid-info">
+    <div class="info-box"><span>Bộ / Thành phần</span><strong id="info-radical">-</strong></div>
+    <div class="info-box"><span>Số nét</span><strong id="info-strokes">-</strong></div>
+    <div class="info-box"><span>Hán Việt</span><strong id="info-hanviet">-</strong></div>
+    <div class="info-box"><span>Từ loại</span><strong id="info-pos">-</strong></div>
+  </div>
+
+  <!-- Câu ví dụ -->
+  <div class="example-box">
+    <div class="example-header">
+      <span>📖 CÂU VÍ DỤ</span>
+      <button class="audio-btn" style="width:28px; height:28px;" title="Nghe câu ví dụ" onclick="speakExample(event)">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      </button>
+    </div>
+    <div class="example-cn" id="ex-cn">-</div>
+    <div class="example-pinyin" id="ex-pinyin">-</div>
+    <div class="example-vi" id="ex-vi">-</div>
+  </div>
+
+  <!-- Nút bấm -->
+  <div class="actions">
+    <button class="btn-remember" onclick="markWord('remember')">
+      <span>❤️ ĐÃ NHỚ</span>
+      <small style="font-size:10px; opacity:0.8;">Lưu danh sách nhớ</small>
+    </button>
+    <button onclick="nextCard()">
+      <span>➔ TIẾP THEO</span>
+      <small style="font-size:10px; color:#64748b;">Chuyển thẻ</small>
+    </button>
+    <button class="btn-forget" onclick="markWord('forget')">
+      <span>☹ CHƯA NHỚ</span>
+      <small style="font-size:10px; opacity:0.8;">Cần học lại</small>
+    </button>
+    <button onclick="flipCardDirect()">
+      <span>🔄 XEM ĐÁP ÁN</span>
+      <small style="font-size:10px; color:#64748b;">Lật mặt sau</small>
+    </button>
+  </div>
+
+  <!-- Chế độ học -->
+  <div class="mode-bar">
+    <button class="mode-btn active" id="btn-mode-all" onclick="filterMode('all')">📚 Tất cả từ vựng</button>
+    <button class="mode-btn" id="btn-mode-review" onclick="filterMode('review')">🔄 Ôn từ chưa nhớ (<span id="count-forget">0</span>)</button>
+  </div>
+</div>
+
+<script>
+  let allWords = [];
+  let currentList = [];
+  let currentIndex = 0;
+  let currentMode = 'all';
+
+  let remembered = JSON.parse(localStorage.getItem('rememberedWords')) || [];
+  let forgotten = JSON.parse(localStorage.getItem('forgottenWords')) || [];
+
+  async function loadWords() {
+    try {
+      const res = await fetch('words.json');
+      allWords = await res.json();
+      updateModeList();
+      renderCard();
+      updateForgetCount();
+    } catch (e) {
+      document.getElementById('front-hanzi').innerText = "Lỗi!";
+      document.getElementById('front-pinyin').innerText = "Không thể tải file words.json";
+    }
+  }
+
+  function updateForgetCount() {
+    document.getElementById('count-forget').innerText = forgotten.length;
+  }
+
+  function updateModeList() {
+    if (currentMode === 'review') {
       currentList = allWords.filter(w => forgotten.includes(w.id));
-      if(currentList.length === 0) alert("Bạn chưa có từ nào trong danh sách Chưa nhớ!");
     } else {
       currentList = [...allWords];
     }
+  }
+
+  function renderCard() {
+    updateForgetCount();
+    
+    if (currentList.length === 0) {
+      document.getElementById('front-hanzi').innerText = "🎉";
+      document.getElementById('front-pinyin').innerText = currentMode === 'review' ? "Bạn đã nhớ hết các từ ôn tập!" : "Chưa có từ vựng";
+      document.getElementById('back-meaning').innerText = "Hoàn thành!";
+      document.getElementById('card-counter').innerText = `0/0`;
+      document.getElementById('progress').style.width = `100%`;
+      return;
+    }
+
+    if (currentIndex >= currentList.length) currentIndex = 0;
+    const item = currentList[currentIndex];
+    
+    document.getElementById('front-hanzi').innerText = item.hanzi;
+    document.getElementById('front-pinyin').innerText = `[${item.pinyin}]`;
+    document.getElementById('front-level').innerText = item.level || 'HSK';
+    document.getElementById('back-meaning').innerText = item.meaning;
+    
+    document.getElementById('info-radical').innerText = item.radical || '-';
+    document.getElementById('info-strokes').innerText = item.strokes || '-';
+    document.getElementById('info-hanviet').innerText = item.hanviet || '-';
+    document.getElementById('info-pos').innerText = item.pos || '-';
+    
+    document.getElementById('ex-cn').innerText = item.example_cn || '-';
+    document.getElementById('ex-pinyin').innerText = item.example_pinyin || '-';
+    document.getElementById('ex-vi').innerText = item.example_vi || '-';
+
+    document.getElementById('card-counter').innerText = `${currentIndex + 1}/${currentList.length}`;
+    document.getElementById('progress').style.width = `${((currentIndex + 1) / currentList.length) * 100}%`;
+    document.getElementById('card').classList.remove('flipped');
+  }
+
+  function flipCard(event) {
+    if (event.target.closest('.audio-btn')) return;
+    document.getElementById('card').classList.toggle('flipped');
+  }
+
+  function flipCardDirect() {
+    document.getElementById('card').classList.toggle('flipped');
+  }
+
+  function nextCard() {
+    if (currentList.length === 0) return;
+    currentIndex = (currentIndex + 1) % currentList.length;
     renderCard();
+  }
+
+  function markWord(type) {
+    if (currentList.length === 0) return;
+    const item = currentList[currentIndex];
+    
+    if (type === 'remember') {
+      if (!remembered.includes(item.id)) remembered.push(item.id);
+      forgotten = forgotten.filter(id => id !== item.id);
+    } else {
+      if (!forgotten.includes(item.id)) forgotten.push(item.id);
+      remembered = remembered.filter(id => id !== item.id);
+    }
+
+    localStorage.setItem('rememberedWords', JSON.stringify(remembered));
+    localStorage.setItem('forgottenWords', JSON.stringify(forgotten));
+
+    if (currentMode === 'review' && type === 'remember') {
+      currentList = currentList.filter(w => w.id !== item.id);
+      if (currentIndex >= currentList.length) currentIndex = 0;
+    } else {
+      currentIndex = (currentIndex + 1) % currentList.length;
+    }
+    
+    renderCard();
+  }
+
+  function filterMode(mode) {
+    currentMode = mode;
+    currentIndex = 0;
+    document.getElementById('btn-mode-all').classList.toggle('active', mode === 'all');
+    document.getElementById('btn-mode-review').classList.toggle('active', mode === 'review');
+    updateModeList();
+    renderCard();
+  }
+
+  // --- Google TTS Phát âm Tiếng Trung ---
+  function speakText(text) {
+    if (!text || text === '-') return;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.85;
+      
+      const voices = window.speechSynthesis.getVoices();
+      const zhVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('cmn'));
+      if (zhVoice) utterance.voice = zhVoice;
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=zh-CN&client=tw-ob`;
+      new Audio(url).play();
+    }
+  }
+
+  function speakCurrent(event) {
+    if (event) event.stopPropagation();
+    if (currentList.length > 0) speakText(currentList[currentIndex].hanzi);
+  }
+
+  function speakExample(event) {
+    if (event) event.stopPropagation();
+    if (currentList.length > 0) speakText(currentList[currentIndex].example_cn);
   }
 
   loadWords();
