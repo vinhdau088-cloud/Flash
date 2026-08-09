@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "hanzi": "谢谢",
+    "pinyin": "xièxie",
+    "level": "HSK1",
+    "radical": "讠 (Bộ ngôn)",
+    "strokes": "12 nét",
+    "hanviet": "tạ tạ",
+    "pos": "động từ",
+    "meaning": "cảm ơn",
+    "example_cn": "谢谢你的帮助。",
+    "example_pinyin": "Xièxie nǐ de bāngzhù.",
+    "example_vi": "Cảm ơn sự giúp đỡ của bạn."
+  },
+  {
+    "id": 2,
+    "hanzi": "你好",
+    "pinyin": "nǐ hǎo",
+    "level": "HSK1",
+    "radical": "亻 (Bộ nhân)",
+    "strokes": "7 nét",
+    "hanviet": "nễ hảo",
+    "pos": "thán từ",
+    "meaning": "xin chào",
+    "example_cn": "你好！很高兴认识你。",
+    "example_pinyin": "Nǐ hǎo! Hěn gāoxìng rènshí nǐ.",
+    "example_vi": "Xin chào! Rất vui được quen biết bạn."
+  }
+]
