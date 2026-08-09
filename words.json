@@ -1,30 +1,18 @@
-[
-  {
-    "id": 1,
-    "hanzi": "谢谢",
-    "pinyin": "xièxie",
-    "level": "HSK1",
-    "radical": "讠 (Bộ ngôn)",
-    "strokes": "12 nét",
-    "hanviet": "tạ tạ",
-    "pos": "động từ",
-    "meaning": "cảm ơn",
-    "example_cn": "谢谢你的帮助。",
-    "example_pinyin": "Xièxie nǐ de bāngzhù.",
-    "example_vi": "Cảm ơn sự giúp đỡ của bạn."
-  },
-  {
-    "id": 2,
-    "hanzi": "你好",
-    "pinyin": "nǐ hǎo",
-    "level": "HSK1",
-    "radical": "亻 (Bộ nhân)",
-    "strokes": "7 nét",
-    "hanviet": "nễ hảo",
-    "pos": "thán từ",
-    "meaning": "xin chào",
-    "example_cn": "你好！很高兴认识你。",
-    "example_pinyin": "Nǐ hǎo! Hěn gāoxìng rènshí nǐ.",
-    "example_vi": "Xin chào! Rất vui được quen biết bạn."
-  }
-]
+{
+  "hsk1": [
+    { "id": 1, "word": "爱", "pinyin": "ài", "meaning": "yêu, thích", "example": "我爱你。" },
+    { "id": 2, "word": "八", "pinyin": "bā", "meaning": "số 8", "example": "我有八个苹果。" }
+  ],
+  "hsk2": [
+    { "id": 3, "word": "吧", "pinyin": "ba", "meaning": "đi, nhé (trợ từ)", "example": "我们走吧。" }
+  ],
+  "hsk3": [
+    { "id": 4, "word": "学习", "pinyin": "xué xí", "meaning": "học tập, học", "example": "我喜欢学习中文。" },
+    { "id": 5, "word": "努力", "pinyin": "nǔ lì", "meaning": "nỗ lực, cố gắng", "example": "你要努力学习。" },
+    { "id": 6, "word": "机会", "pinyin": "jī huì", "meaning": "cơ hội", "example": "这是一个好机会。" },
+    { "id": 7, "word": "坚持", "pinyin": "jiān chí", "meaning": "kiên trì", "example": "坚持就是胜利。" }
+  ],
+  "hsk4": [],
+  "hsk5": [],
+  "hsk6": []
+}
